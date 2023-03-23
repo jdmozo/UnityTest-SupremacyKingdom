@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     [CreateAssetMenu(fileName = "newBirdInfo", menuName = "Card/BirdInfo", order = 2)]
     public class CardInfo : ScriptableObject
     {

@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     [RequireComponent(typeof(Rigidbody2D))]
     public class Bird : MonoBehaviour
     {

@@ -3,11 +3,15 @@ using UnityEngine;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class Pig : MonoBehaviour
     {
         public float Health = 150f;
         public Sprite SpriteShownWhenHurt;
         private float ChangeSpriteHealth;
+        [SerializeField] private bool _showText;
         [SerializeField] private GameObject _textPrefab;
 
         private void OnEnable() => GameManager.ScoreChange += InstantiateScore;
@@ -49,9 +53,12 @@ namespace SupremacyKingdom
 
         private void InstantiateScore(int score)
         {
-            GameObject temp = Instantiate(_textPrefab);
-            temp.transform.position = gameObject.transform.position;
-            temp.GetComponent<TextMeshPro>().text = $"{score}";
+            if (_showText)
+            {
+                GameObject temp = Instantiate(_textPrefab);
+                temp.transform.position = gameObject.transform.position;
+                temp.GetComponent<TextMeshPro>().text = $"{score}";
+            }
         }
 
     }

@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class CardSelectionMenu : MonoBehaviour
     {
         public static event Action<bool> OnCardsSelected;

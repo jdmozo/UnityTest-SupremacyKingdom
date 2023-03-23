@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class GameEndMenu : MonoBehaviour
     {
         [SerializeField] private GameObject _menuContainer;

@@ -3,8 +3,33 @@ using System;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class SlingShot : MonoBehaviour
     {
+        private Vector3 SlingshotMiddleVector;
+
+        [HideInInspector]
+        public SlingshotState slingshotState;
+
+        public Transform LeftSlingshotOrigin, RightSlingshotOrigin;
+
+        public LineRenderer SlingshotLineRenderer1;
+        public LineRenderer SlingshotLineRenderer2;
+
+        public LineRenderer TrajectoryLineRenderer;
+
+        [HideInInspector]
+        public GameObject BirdToThrow;
+
+        public Transform BirdWaitPosition;
+
+        public float ThrowSpeed;
+
+        [HideInInspector]
+        public float TimeSinceThrown;
+
         void Start()
         {
             SlingshotLineRenderer1.sortingLayerName = "Foreground";
@@ -52,7 +77,7 @@ namespace SupremacyKingdom
                             BirdToThrow.transform.position = location;
                         }
                         float distance = Vector3.Distance(SlingshotMiddleVector, BirdToThrow.transform.position);
-                        MostrarTrayectoria(distance);
+                        ShowSling(distance);
                     }
                     else
                     {
@@ -63,7 +88,7 @@ namespace SupremacyKingdom
                         {
                             SetSlingshot_LineRenderersActive(false);
                             slingshotState = SlingshotState.BirdFlying;
-                            TirarPajaro(distance);
+                            ShotBird(distance);
                         }
                         else
                         {
@@ -86,7 +111,7 @@ namespace SupremacyKingdom
             }
         }
 
-        private void TirarPajaro(float distance)
+        private void ShotBird(float distance)
         {
             Vector3 velocity = SlingshotMiddleVector - BirdToThrow.transform.position;
             BirdToThrow.GetComponent<Bird>().OnBirdShoot();
@@ -121,7 +146,7 @@ namespace SupremacyKingdom
             TrajectoryLineRenderer.enabled = active;
         }
 
-        void MostrarTrayectoria(float distance)
+        void ShowSling(float distance)
         {
             Set_TrajectoryLineRenderesActive(true);
             Vector3 v2 = SlingshotMiddleVector - BirdToThrow.transform.position;
@@ -144,27 +169,5 @@ namespace SupremacyKingdom
             for (int i = 0; i < segmentCount; i++)
                 TrajectoryLineRenderer.SetPosition(i, segments[i]);
         }
-
-        private Vector3 SlingshotMiddleVector;
-
-        [HideInInspector]
-        public SlingshotState slingshotState;
-
-        public Transform LeftSlingshotOrigin, RightSlingshotOrigin;
-
-        public LineRenderer SlingshotLineRenderer1;
-        public LineRenderer SlingshotLineRenderer2;
-
-        public LineRenderer TrajectoryLineRenderer;
-
-        [HideInInspector]
-        public GameObject BirdToThrow;
-
-        public Transform BirdWaitPosition;
-
-        public float ThrowSpeed;
-
-        [HideInInspector]
-        public float TimeSinceThrown;
     }
 }

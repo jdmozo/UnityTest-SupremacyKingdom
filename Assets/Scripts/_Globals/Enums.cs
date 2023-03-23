@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SupremacyKingdom
+﻿namespace SupremacyKingdom
 {
+    /// <summary>
+    /// State of the Sling.
+    /// </summary>
     public enum SlingshotState
     {
         Idle,
@@ -12,6 +10,9 @@ namespace SupremacyKingdom
         BirdFlying
     }
 
+    /// <summary>
+    /// State of the stage.
+    /// </summary>
     public enum GameState
     {
         Idle,
@@ -22,6 +23,9 @@ namespace SupremacyKingdom
         Lost
     }
 
+    /// <summary>
+    /// State of the Bird.
+    /// </summary>
     public enum BirdState
     {
         BeforeThrown,

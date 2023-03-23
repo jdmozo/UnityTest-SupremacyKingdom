@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace SupremacyKingdom
+﻿namespace SupremacyKingdom
 {
+    /// <summary>
+    /// Global constants
+    /// </summary>
     public static class Constants
     {
         public static readonly float Min_Velocity = 0.05f;

@@ -2,6 +2,9 @@
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class CameraMove : MonoBehaviour
     {
         void Update()

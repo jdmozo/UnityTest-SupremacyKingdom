@@ -3,10 +3,14 @@ using UnityEngine;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class Brick : MonoBehaviour
     {
         public float Health = 70f;
         [SerializeField] private GameObject _textPrefab;
+        [SerializeField] private bool _showText;
 
         private void OnEnable() => GameManager.ScoreChange += InstantiateScore;
 
@@ -35,9 +39,12 @@ namespace SupremacyKingdom
 
         private void InstantiateScore(int score)
         {
-            GameObject temp = Instantiate(_textPrefab);
-            temp.transform.position = gameObject.transform.position;
-            temp.GetComponent<TextMeshPro>().text = $"{score}";
+            if (_showText)
+            {
+                GameObject temp = Instantiate(_textPrefab);
+                temp.transform.position = gameObject.transform.position;
+                temp.GetComponent<TextMeshPro>().text = $"{score}";
+            }
         }
 
     }

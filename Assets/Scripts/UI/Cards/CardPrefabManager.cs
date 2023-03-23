@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class CardPrefabManager : MonoBehaviour
     {
         [Header("Card Manager")]

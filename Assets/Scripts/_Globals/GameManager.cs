@@ -6,6 +6,9 @@ using System;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// Manager of the game.
+    /// </summary>
     public class GameManager : MonoBehaviour
     {
         public static GameManager instance;

@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// The score which is shown when the bird collide with a pig or brick.
+    /// </summary>
+
     public class ScoreText : MonoBehaviour
     {
         [SerializeField] private float _time = 2;

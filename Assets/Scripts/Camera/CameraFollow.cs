@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace SupremacyKingdom
 {
+    /// <summary>
+    /// To do
+    /// </summary>
     public class CameraFollow : MonoBehaviour
     {
         void Update()
