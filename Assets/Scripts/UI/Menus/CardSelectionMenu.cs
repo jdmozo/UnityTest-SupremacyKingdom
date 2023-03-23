@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace SupremacyKingdom
         [SerializeField] private int _cardSelectablesQuantity = 3;
         [SerializeField] private Transform _cardContainer;
         [SerializeField] private CardInfo[] _cardsInfo;
+        [SerializeField] private List<CardInfo> _birdsSelected;
 
 
         private void OnEnable()
@@ -32,9 +34,10 @@ namespace SupremacyKingdom
         {
             StartCoroutine(GenerateCards());
             _nextStageButton.onClick.AddListener(delegate {
-
-                CloseMenu();
-                });
+                GameManager.instance.BirdsSelected = _birdsSelected;
+                StartCoroutine(GameManager.instance.StartGame());
+                gameObject.SetActive(false);
+            });
         }
 
         private IEnumerator GenerateCards()
@@ -48,11 +51,11 @@ namespace SupremacyKingdom
             {
                 CardInfo currentInfo = _cardsInfo[i];
                 GameObject newCard = Instantiate(_cardPrefab, _cardContainer);
-                newCard.GetComponent<CardPrefabManager>().SetData(this, currentInfo.birdName, currentInfo.birdImage, currentInfo.cardColor);
+                newCard.GetComponent<CardPrefabManager>().SetData(this, currentInfo.birdName, currentInfo.birdImage, currentInfo.cardColor, currentInfo);
             }
         }
 
-        public void UpdateCardsSelected(int quantity)
+        public void UpdateCardsSelected(int quantity, CardInfo newCard)
         {
             _cardSelectablesQuantity += quantity;
             _selectableText.text = $"You have <b><color=\"red\">{_cardSelectablesQuantity}</color></b> left";
@@ -69,6 +72,12 @@ namespace SupremacyKingdom
             }
         }
 
-        private void CloseMenu() => gameObject.SetActive(false);
+        public void ChangeCard(bool addCard, CardInfo newCard)
+        {
+            if (addCard)
+                _birdsSelected.Add(newCard);
+            else
+                _birdsSelected.Remove(newCard);
+        }
     }
 }

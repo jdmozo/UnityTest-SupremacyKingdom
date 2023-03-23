@@ -1,29 +1,28 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace SupremacyKingdom
 {
     public class ParallaxScrolling : MonoBehaviour
     {
-        Camera camera;
+        private Camera _mainCamera;
+        private Vector3 previous_CameraTransform;
+        public float ParallaxFactor;
+
 
         void Start()
         {
-            camera = Camera.main;
-            previous_CameraTransform = camera.transform.position;
+            _mainCamera = Camera.main;
+            previous_CameraTransform = _mainCamera.transform.position;
         }
-
 
         void Update()
         {
-            Vector3 delta = camera.transform.position - previous_CameraTransform;
+            Vector3 delta = _mainCamera.transform.position - previous_CameraTransform;
             delta.y = 0; delta.z = 0;
             transform.position += delta / ParallaxFactor;
-            previous_CameraTransform = camera.transform.position;
+            previous_CameraTransform = _mainCamera.transform.position;
         }
 
-        public float ParallaxFactor;
 
-        Vector3 previous_CameraTransform;
     }
 }

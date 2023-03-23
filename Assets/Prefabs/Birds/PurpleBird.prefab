@@ -30,7 +30,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100000}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5.4128118, y: -2.11828, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -137,6 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe04427746456644bad65b6243e88ab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explotionDuration: 1
+  explosionPrefab: {fileID: 1966595478036218813, guid: c31d396081dfcf640b8dee3573c12201,
+    type: 3}
 --- !u!96 &9600000
 TrailRenderer:
   serializedVersion: 2

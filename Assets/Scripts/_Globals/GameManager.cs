@@ -1,38 +1,41 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.SceneManagement;
+using System.Collections;
+using System;
 
 namespace SupremacyKingdom
 {
     public class GameManager : MonoBehaviour
     {
+        public static GameManager instance;
+
+        public static event Action<bool> OnGameEnd;
+        public static event Action<int> ScoreChange;
 
         [SerializeField] private bool GameStarted;
 
         public CameraFollow cameraFollow;
         private int currentBirdIndex;
+        private int score;
         public SlingShot slingshot;
-        [HideInInspector] public static GameState CurrentGameState = GameState.Start;
+        [HideInInspector] public static GameState CurrentGameState = GameState.Idle;
         [SerializeField] private List<GameObject> Bricks;
         [SerializeField] private List<GameObject> Birds;
-        [SerializeField] private List<CardInfo> BirdsSelected;
+        [SerializeField] private Transform birdsSpwanPosition;
+        public List<CardInfo> BirdsSelected;
         [SerializeField] private List<GameObject> Pigs;
 
-        void Start()
-        {
-            
-            slingshot.enabled = false;
-            Bricks = new List<GameObject>(GameObject.FindGameObjectsWithTag("Brick"));
-            Birds = new List<GameObject>(GameObject.FindGameObjectsWithTag("Bird"));
-            Pigs = new List<GameObject>(GameObject.FindGameObjectsWithTag("Pig"));
-            slingshot.BirdThrown -= Slingshot_BirdThrown; slingshot.BirdThrown += Slingshot_BirdThrown;
-        }
+        public int Score { get => score; set => score = value; }
+
+        private void Awake() => instance = this;
 
         void Update()
         {
             switch (CurrentGameState)
             {
+                case GameState.Idle:
+                    break;
                 case GameState.Start:
                     if (Input.GetMouseButtonUp(0))
                         AnimateBirdToSlingshot();
@@ -49,22 +52,39 @@ namespace SupremacyKingdom
                     }
                     break;
                 case GameState.Won:
+                    CurrentGameState = GameState.Idle;
+                    OnGameEnd?.Invoke(true);
+                    break;
                 case GameState.Lost:
-                    if (Input.GetMouseButtonUp(0))
-                        SceneManager.LoadScene(0);
+                    CurrentGameState = GameState.Idle;
+                    OnGameEnd?.Invoke(false);
                     break;
                 default:
                     break;
             }
         }
-
         
-        public void StartGame()
+        public IEnumerator StartGame()
         {
+            slingshot.enabled = false;
+            Bricks = new List<GameObject>(GameObject.FindGameObjectsWithTag("Brick"));
+            Pigs = new List<GameObject>(GameObject.FindGameObjectsWithTag("Pig"));
+
+            for (int i = 0; i < BirdsSelected.Count; i++)
+            {
+                GameObject newBird = Instantiate(BirdsSelected[i].birdPrefab, birdsSpwanPosition.position, Quaternion.identity);
+                Birds.Add(newBird);
+                newBird.transform.position = new Vector3(newBird.transform.position.x - 1 * i, newBird.transform.position.y);
+            }
+
+            slingshot.BirdThrown -= Slingshot_BirdThrown; slingshot.BirdThrown += Slingshot_BirdThrown;
+
             CurrentGameState = GameState.Start;
+
+            yield return null;
         }
-        
-        private bool TodosLosCerdosDestruidos() => Pigs.All(x => x == null);
+
+        private bool KillAllEnemies() => Pigs.All(x => x == null);
 
         private void AnimateCamera_ToStartPosition()
         {
@@ -77,7 +97,7 @@ namespace SupremacyKingdom
                 setOnCompleteHandler((x) =>
                 {
                     cameraFollow.IsFollowing = false;
-                    if (TodosLosCerdosDestruidos())
+                    if (KillAllEnemies())
                         CurrentGameState = GameState.Won;
                     else if (currentBirdIndex == Birds.Count - 1)
                         CurrentGameState = GameState.Lost;
@@ -93,6 +113,14 @@ namespace SupremacyKingdom
         private void AnimateBirdToSlingshot()
         {
             CurrentGameState = GameState.BirdMovingToSlingshot;
+
+            for (int i = 0; i < Birds.Count; i++)
+                if (Birds[i] != Birds[currentBirdIndex] && currentBirdIndex < i)
+                    Birds[i].transform.positionTo(Vector2.Distance(Birds[i].transform.position,
+                        new Vector2(Birds[i].transform.position.x + 1 * i, Birds[i].transform.position.y)),
+                        new Vector2(Birds[i].transform.position.x + 1, Birds[i].transform.position.y));
+
+
             Birds[currentBirdIndex].transform.positionTo
                 (Vector2.Distance(Birds[currentBirdIndex].transform.position / 10,
                 slingshot.BirdWaitPosition.transform.position) / 10, //duration
@@ -124,11 +152,17 @@ namespace SupremacyKingdom
             return true;
         }
 
-        public static void AutoResize(int screenWidth, int screenHeight)
+        public void AddScore(int score)
         {
-            Vector2 resizeRatio = new Vector2((float)Screen.width / screenWidth, (float)Screen.height / screenHeight);
-            GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
+            Score += score;
+            ScoreChange?.Invoke(score);
         }
+
+        //public static void AutoResize(int screenWidth, int screenHeight)
+        //{
+        //    Vector2 resizeRatio = new Vector2((float)Screen.width / screenWidth, (float)Screen.height / screenHeight);
+        //    GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(resizeRatio.x, resizeRatio.y, 1.0f));
+        //}
 
         //void OnGUI()
         //{

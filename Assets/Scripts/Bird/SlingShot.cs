@@ -89,7 +89,7 @@ namespace SupremacyKingdom
         private void TirarPajaro(float distance)
         {
             Vector3 velocity = SlingshotMiddleVector - BirdToThrow.transform.position;
-            BirdToThrow.GetComponent<Bird>().AlDispararPajaro();
+            BirdToThrow.GetComponent<Bird>().OnBirdShoot();
             BirdToThrow.GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y) * ThrowSpeed * distance;
             if (BirdThrown != null)
                 BirdThrown(this, EventArgs.Empty);

@@ -14,6 +14,7 @@ namespace SupremacyKingdom
 
     public enum GameState
     {
+        Idle,
         Start,
         BirdMovingToSlingshot,
         Playing,
